@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(135deg, #1e1e1e, #383838);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .box {
+            background: #2a2a2a;
+            padding: 30px;
+            width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        input {
+            width: 90%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: none;
+            background: #444;
+            color: white;
+        }
+        button {
+            width: 95%;
+            padding: 12px;
+            background: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #0062cc;
+        }
+        .link {
+            margin-top: 10px;
+            display: block;
+            color: #99c3ff;
+        }
+        #message {
+            margin-top: 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2>Welcome Back</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <a href="register.html" class="link">Create New Account</a>
+        <p id="message"></p>
+    </div>
+
+<script>
+async function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const message = document.getElementById("message");
+
+    message.textContent = "Logging in...";
+
+    try {
+        const response = await fetch("http://127.0.0.1:5000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+
+        if (response.status === 200) {
+            message.style.color = "lightgreen";
+            message.textContent = "Login successful! Redirecting...";
+
+            // Store token for future use
+            localStorage.setItem("authToken", result.token);
+
+            // Redirect to dashboard
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 1200);
+
+        } else {
+            message.style.color = "red";
+            message.textContent = result.message || result.error;
+        }
+
+    } catch (error) {
+        message.style.color = "red";
+        message.textContent = "Server not reachable";
+    }
+}
+</script>
+
+</body>
+</html>

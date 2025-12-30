@@ -1,0 +1,14 @@
+
+
+### LOGIN
+POST http://127.0.0.1:5000/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "hello123"
+}
+
+### ACCESS DASHBOARD (Protected Route)
+GET http://127.0.0.1:5000/dashboard
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJleHAiOjE3NjQ4NjEyNjF9.o4R4OoZntL2djsiP7mdpHDv9Jlgd9RKU3mjnS-4i8B4
